@@ -1,0 +1,43 @@
+--- origsrc/pocl-0.13/Makefile.am	2016-04-04 08:45:46.000000000 -0500
++++ src/pocl-0.13/Makefile.am	2016-04-12 15:57:53.474247600 -0500
+@@ -39,6 +39,10 @@ PHONIES = install-paths.h
+ if BUILD_ICD
+ icddir = $(sysconfdir)/OpenCL/vendors/
+ icd_DATA = pocl.icd
++if CYGWIN_HOST_OS
++do_subst = sed -e 's,[@]libdir[@],$(bindir),g'
++do_subst += -e 's,libpocl.so.VER,cygpocl-$(LIB_FIRST_VERSION).dll,g'
++else
+ do_subst = sed -e 's,[@]libdir[@],$(libdir),g'
+ 
+ #TODO: this naming scheme is used on other platforms (primarly BSDs?) too
+@@ -47,6 +51,7 @@ do_subst += -e 's,so.VER,so.$(LIB_CURREN
+ else
+ do_subst += -e 's,so.VER,so.$(LIB_FIRST_VERSION).$(LIB_AGE_VERSION).$(LIB_REVISION_VERSION),g'
+ endif
++endif
+ 
+ pocl.icd:
+ 	$(do_subst) < $(srcdir)/pocl.icd.in > $(builddir)/pocl.icd
+--- origsrc/pocl-0.13/configure.ac	2016-04-04 08:45:46.000000000 -0500
++++ src/pocl-0.13/configure.ac	2016-04-12 15:53:33.653254500 -0500
+@@ -34,9 +34,14 @@ AC_CANONICAL_HOST
+ AM_INIT_AUTOMAKE([foreign])
+ AM_SILENT_RULES([AM_DEFAULT_VERBOSITY=0])
+ 
++AM_CONDITIONAL([CYGWIN_HOST_OS], false)
+ AM_CONDITIONAL([DARWIN_HOST_OS], false)
+ AM_CONDITIONAL([FREEBSD_HOST_OS], false)
+ case $host_os in
++  cygwin* )
++    AM_CONDITIONAL([CYGWIN_HOST_OS], true)
++    AC_SUBST([LIBRARY_SUFFIX], [".dll"] )
++         ;;
+   darwin* )
+     AM_CONDITIONAL([DARWIN_HOST_OS], true)
+     AC_SUBST([LIBRARY_SUFFIX], [".dylib"] )
+--- origsrc/pocl-0.13/ocl-vendors/pocl-tests.icd.in	2016-04-04 08:45:46.000000000 -0500
++++ src/pocl-0.13/ocl-vendors/pocl-tests.icd.in	2016-04-12 15:50:08.292176900 -0500
+@@ -1 +1 @@
+-@abs_top_builddir@/lib/CL/.libs/libpocl.so
++@abs_top_builddir@/lib/CL/.libs/cygpocl-1.dll

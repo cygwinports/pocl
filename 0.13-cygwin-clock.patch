@@ -1,0 +1,14 @@
+Should CLOCK_MONOTONIC_RAW == CLOCK_MONOTONIC ?
+
+--- origsrc/pocl-0.13/lib/CL/pocl_timing.c	2016-04-04 08:45:46.000000000 -0500
++++ src/pocl-0.13/lib/CL/pocl_timing.c	2016-04-12 13:25:58.511794300 -0500
+@@ -70,8 +70,7 @@ uint64_t pocl_gettimemono_ns() {
+ # elif defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+   clock_gettime(CLOCK_UPTIME_FAST, &timespec);
+ # else
+-# warn Using clock_gettime with CLOCK_REALTIME for monotonic clocks
+-  clock_gettime(CLOCK_REALTIME, &timespec);
++  clock_gettime(CLOCK_MONOTONIC, &timespec);
+ # endif
+   return ((timespec.tv_sec * 1000000000UL) + timespec.tv_nsec);
+ 

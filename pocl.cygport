@@ -1,0 +1,46 @@
+NAME="pocl"
+VERSION=0.13
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="OpenCL backend implementation"
+DESCRIPTION="Portable Computing Language (pocl) aims to become a MIT-licensed
+open source implementation of the OpenCL standard which can be easily adapted
+for new targets and devices, both for homogeneous CPU and heterogenous GPUs/
+accelerators.  pocl uses Clang as an OpenCL C frontend and LLVM for the kernel
+compiler implementation, and as a portability layer."
+HOMEPAGE="http://pocl.sourceforge.net/"
+SRC_URI="mirror://sourceforge/pocl/pocl-${VERSION}.tar.gz"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/rpms/pocl.git/plain/i686-fix.patch#/pocl-i686-fix.patch
+	0.13-cygwin-clock.patch
+	0.13-cygwin-icd.patch
+	0.13-no-undefined.patch
+"
+
+PKG_NAMES="libpocl1 libpocl-common libpocl-devel libpoclu1 libpoclu-devel"
+libpocl1_REQUIRES="clang libpocl-common"
+libpocl1_CONTENTS="usr/bin/cygpocl-1.dll"
+libpocl_common_CONTENTS="
+	etc/OpenCL/vendors/pocl.icd
+	usr/share/doc/pocl/
+	usr/share/pocl/
+"
+libpocl_devel_REQUIRES="clang llvm libpocl-common"
+libpocl_devel_CONTENTS="
+	usr/bin/pocl-standalone
+	usr/lib/libpocl.dll.a
+	usr/lib/pkgconfig/pocl.pc
+	usr/lib/pocl/llvmopencl.so
+"
+libpoclu1_SUMMARY="Portable OpenCL utility library"
+libpoclu1_CONTENTS="usr/bin/cygpoclu-1.dll"
+libpoclu_devel_SUMMARY=${libpoclu1_SUMMARY}
+libpoclu_devel_REQUIRES="libOpenCL-devel"
+libpoclu_devel_CONTENTS="
+	usr/include/poclu.h
+	usr/lib/libpoclu.dll.a
+"
+
+DIFF_EXCLUDES="package.m4 testsuite"
+
+CYGCONF_ARGS="--enable-icd"
