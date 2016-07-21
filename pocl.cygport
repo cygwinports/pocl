@@ -1,6 +1,6 @@
 NAME="pocl"
 VERSION=0.13
-RELEASE=1
+RELEASE=2
 CATEGORY="Libs"
 SUMMARY="OpenCL backend implementation"
 DESCRIPTION="Portable Computing Language (pocl) aims to become a MIT-licensed
@@ -44,3 +44,4 @@ libpoclu_devel_CONTENTS="
 DIFF_EXCLUDES="package.m4 testsuite"
 
 CYGCONF_ARGS="--enable-icd"
+MAKEOPTS+=" LLVM_LIBS=-lLLVM-\$(LLVM_VERSION)"
