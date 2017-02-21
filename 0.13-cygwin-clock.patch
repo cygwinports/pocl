@@ -6,7 +6,7 @@ Should CLOCK_MONOTONIC_RAW == CLOCK_MONOTONIC ?
  # elif defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
    clock_gettime(CLOCK_UPTIME_FAST, &timespec);
  # else
--# warn Using clock_gettime with CLOCK_REALTIME for monotonic clocks
+-# warning Using clock_gettime with CLOCK_REALTIME for monotonic clocks
 -  clock_gettime(CLOCK_REALTIME, &timespec);
 +  clock_gettime(CLOCK_MONOTONIC, &timespec);
  # endif

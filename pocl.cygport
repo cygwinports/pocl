@@ -1,6 +1,8 @@
+inherit cmake
+
 NAME="pocl"
-VERSION=0.13
-RELEASE=2
+VERSION=0.14
+RELEASE=0.1.git3fef5b5
 CATEGORY="Libs"
 SUMMARY="OpenCL backend implementation"
 DESCRIPTION="Portable Computing Language (pocl) aims to become a MIT-licensed
@@ -9,12 +11,15 @@ for new targets and devices, both for homogeneous CPU and heterogenous GPUs/
 accelerators.  pocl uses Clang as an OpenCL C frontend and LLVM for the kernel
 compiler implementation, and as a portability layer."
 HOMEPAGE="http://pocl.sourceforge.net/"
-SRC_URI="mirror://sourceforge/pocl/pocl-${VERSION}.tar.gz"
+#SRC_URI="mirror://sourceforge/pocl/pocl-${VERSION}.tar.gz"
+commit=${RELEASE#*git}8014c40e3e746a7ada281498582d8d569
+SRC_URI="https://github.com/pocl/pocl/archive/${commit}/pocl-${commit}.tar.gz"
+SRC_DIR="pocl-${commit}"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/rpms/pocl.git/plain/i686-fix.patch#/pocl-i686-fix.patch
+	http://pkgs.fedoraproject.org/cgit/rpms/pocl.git/plain/0001-wrap-more-stuff-for-64-bit-atomics.patch
 	0.13-cygwin-clock.patch
-	0.13-cygwin-icd.patch
-	0.13-no-undefined.patch
+	0.14-cygwin-cmake.patch
+	0.14-no-undefined.patch
 "
 
 PKG_NAMES="libpocl1 libpocl-common libpocl-devel libpoclu1 libpoclu-devel"
@@ -25,12 +30,12 @@ libpocl_common_CONTENTS="
 	usr/share/doc/pocl/
 	usr/share/pocl/
 "
-libpocl_devel_REQUIRES="clang llvm libpocl-common"
+libpocl_devel_REQUIRES="libpocl-common"
 libpocl_devel_CONTENTS="
-	usr/bin/pocl-standalone
+	usr/bin/poclcc.exe
 	usr/lib/libpocl.dll.a
 	usr/lib/pkgconfig/pocl.pc
-	usr/lib/pocl/llvmopencl.so
+	usr/lib/pocl/cygllvmopencl.dll
 "
 libpoclu1_SUMMARY="Portable OpenCL utility library"
 libpoclu1_CONTENTS="usr/bin/cygpoclu-1.dll"
@@ -41,7 +46,6 @@ libpoclu_devel_CONTENTS="
 	usr/lib/libpoclu.dll.a
 "
 
-DIFF_EXCLUDES="package.m4 testsuite"
+DIFF_EXCLUDES="cl.hpp* testsuite"
 
-CYGCONF_ARGS="--enable-icd"
-MAKEOPTS+=" LLVM_LIBS=-lLLVM-\$(LLVM_VERSION)"
+CYGCMAKE_ARGS="-DENABLE_ICD=ON -DSINGLE_LLVM_LIB=ON"

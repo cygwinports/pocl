@@ -1,0 +1,15 @@
+--- a/lib/llvmopencl/CMakeLists.txt	2016-11-16 10:15:27.000000000 -0600
++++ b/lib/llvmopencl/CMakeLists.txt	2017-02-20 18:58:29.045075500 -0600
+@@ -75,9 +75,10 @@ add_library("llvmopencl" MODULE "$<TARGE
+ 
+ # not sure where other platforms get their library linkage list, probably there is
+ # way to make this more consistent on different platforms
+-if(MSVC)
++if(WIN32 OR CYGWIN)
++  target_link_libraries("llvmopencl" pocl)
+   target_link_libraries("llvmopencl" ${POCL_LLVM_LIBS})
+-endif(MSVC)
++endif(WIN32 OR CYGWIN)
+ 
+ #target_link_libraries("llvmopencl" "${LLVM_SYSLIBS}")
+  
