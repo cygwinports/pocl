@@ -2,7 +2,7 @@ inherit cmake
 
 NAME="pocl"
 VERSION=0.14
-RELEASE=0.1.git3fef5b5
+RELEASE=1
 CATEGORY="Libs"
 SUMMARY="OpenCL backend implementation"
 DESCRIPTION="Portable Computing Language (pocl) aims to become a MIT-licensed
@@ -10,11 +10,11 @@ open source implementation of the OpenCL standard which can be easily adapted
 for new targets and devices, both for homogeneous CPU and heterogenous GPUs/
 accelerators.  pocl uses Clang as an OpenCL C frontend and LLVM for the kernel
 compiler implementation, and as a portability layer."
-HOMEPAGE="http://pocl.sourceforge.net/"
-#SRC_URI="mirror://sourceforge/pocl/pocl-${VERSION}.tar.gz"
-commit=${RELEASE#*git}8014c40e3e746a7ada281498582d8d569
-SRC_URI="https://github.com/pocl/pocl/archive/${commit}/pocl-${commit}.tar.gz"
-SRC_DIR="pocl-${commit}"
+HOMEPAGE="http://portablecl.org/"
+SRC_URI="http://portablecl.org/downloads/pocl-${VERSION}.tar.gz"
+#commit=${RELEASE#*git}8014c40e3e746a7ada281498582d8d569
+#SRC_URI="https://github.com/pocl/pocl/archive/${commit}/pocl-${commit}.tar.gz"
+#SRC_DIR="pocl-${commit}"
 PATCH_URI="
 	http://pkgs.fedoraproject.org/cgit/rpms/pocl.git/plain/0001-wrap-more-stuff-for-64-bit-atomics.patch
 	0.13-cygwin-clock.patch
@@ -48,4 +48,8 @@ libpoclu_devel_CONTENTS="
 
 DIFF_EXCLUDES="cl.hpp* testsuite"
 
-CYGCMAKE_ARGS="-DENABLE_ICD=ON -DSINGLE_LLVM_LIB=ON"
+CYGCMAKE_ARGS="
+	-DPOCL_INSTALL_ICD_VENDORDIR=/etc/OpenCL/vendors
+	-DENABLE_ICD=ON
+	-DSINGLE_LLVM_LIB=ON
+"
