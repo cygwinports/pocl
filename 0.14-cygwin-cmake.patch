@@ -1,14 +1,3 @@
---- a/CMakeLists.txt	2016-11-16 10:15:27.000000000 -0600
-+++ b/CMakeLists.txt	2017-02-20 20:02:07.768811900 -0600
-@@ -954,7 +954,7 @@ rename_if_different("${CMAKE_BINARY_DIR}
- ##########################################################
- 
- if(ENABLE_ICD)
--  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/pocl.icd" CONTENT "${POCL_INSTALL_PUBLIC_LIBDIR}/$<TARGET_FILE_NAME:pocl>" CONDITION 1)
-+  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/pocl.icd" CONTENT "${POCL_INSTALL_PUBLIC_BINDIR}/$<TARGET_FILE_NAME:pocl>" CONDITION 1)
-   install(FILES "${CMAKE_BINARY_DIR}/pocl.icd"
-          DESTINATION "${POCL_INSTALL_ICD_VENDORDIR}")
- 
 --- a/cmake/LLVM.cmake	2016-11-16 10:15:27.000000000 -0600
 +++ b/cmake/LLVM.cmake	2017-02-20 16:49:04.965353500 -0600
 @@ -223,7 +223,7 @@ endforeach()

@@ -1,0 +1,13 @@
+Linking directly with ld(1) without the proper crt*.o results in broken code.
+
+--- a/CMakeLists.txt	2017-12-18 12:45:53.000000000 -0600
++++ b/CMakeLists.txt	2018-01-01 13:31:47.805309200 -0600
+@@ -335,7 +335,7 @@ endif()
+ 
+ ######################################################################################
+ 
+-if (NOT MSVC)
++if (NOT WIN32 AND NOT CYGWIN)
+   find_program(LINK_COMMAND
+     NAMES ld${CMAKE_EXECUTABLE_SUFFIX}
+     HINTS ENV PATH

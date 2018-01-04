@@ -1,7 +1,7 @@
-inherit cmake
+inherit clang cmake
 
 NAME="pocl"
-VERSION=0.14
+VERSION=1.0
 RELEASE=1
 CATEGORY="Libs"
 SUMMARY="OpenCL backend implementation"
@@ -20,11 +20,13 @@ PATCH_URI="
 	0.13-cygwin-clock.patch
 	0.14-cygwin-cmake.patch
 	0.14-no-undefined.patch
+	1.0-link-clang.patch
+	1.0-ix86-size_t.patch
 "
 
-PKG_NAMES="libpocl1 libpocl-common libpocl-devel libpoclu1 libpoclu-devel"
-libpocl1_REQUIRES="clang libpocl-common"
-libpocl1_CONTENTS="usr/bin/cygpocl-1.dll"
+PKG_NAMES="libpocl2 libpocl-common libpocl-devel libpoclu2 libpoclu-devel"
+libpocl2_REQUIRES="clang libpocl-common"
+libpocl2_CONTENTS="usr/bin/cygpocl-2.dll"
 libpocl_common_CONTENTS="
 	etc/OpenCL/vendors/pocl.icd
 	usr/share/doc/pocl/
@@ -37,8 +39,8 @@ libpocl_devel_CONTENTS="
 	usr/lib/pkgconfig/pocl.pc
 	usr/lib/pocl/cygllvmopencl.dll
 "
-libpoclu1_SUMMARY="Portable OpenCL utility library"
-libpoclu1_CONTENTS="usr/bin/cygpoclu-1.dll"
+libpoclu2_SUMMARY="Portable OpenCL utility library"
+libpoclu2_CONTENTS="usr/bin/cygpoclu-2.dll"
 libpoclu_devel_SUMMARY=${libpoclu1_SUMMARY}
 libpoclu_devel_REQUIRES="libOpenCL-devel"
 libpoclu_devel_CONTENTS="
@@ -50,6 +52,7 @@ DIFF_EXCLUDES="cl.hpp* testsuite"
 
 CYGCMAKE_ARGS="
 	-DPOCL_INSTALL_ICD_VENDORDIR=/etc/OpenCL/vendors
+	-DPOCL_ICD_ABSOLUTE_PATH=OFF
 	-DENABLE_ICD=ON
 	-DSINGLE_LLVM_LIB=ON
 "

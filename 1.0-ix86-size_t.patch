@@ -1,0 +1,11 @@
+--- origsrc/pocl-1.0/include/pocl_types.h	2017-12-18 12:45:53.000000000 -0600
++++ src/pocl-1.0/include/pocl_types.h	2018-01-02 14:46:42.012519300 -0600
+@@ -20,7 +20,7 @@ typedef unsigned long ulong;
+ typedef unsigned int ulong;
+ #endif
+ 
+-typedef ulong size_t;
++typedef __SIZE_TYPE__ size_t;
+ 
+ #endif
+ 
